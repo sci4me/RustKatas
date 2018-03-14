@@ -1,0 +1,6 @@
+[package]
+name = "translate"
+version = "0.1.0"
+authors = ["sci4me <matthewtpeterson1@gmail.com>"]
+
+[dependencies]
