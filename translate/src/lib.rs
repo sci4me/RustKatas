@@ -30,9 +30,15 @@ pub fn translate(s: &str) -> String {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
-    fn it_works() {
-        assert_eq!(super::translate("thisIsACamel"), "this_is_a_camel");
-        assert_eq!(super::translate("ThisIsATitle"), "this_is_a_title");
+    fn test_translate_camel_case() {
+        assert_eq!(translate("thisIsACamel"), "this_is_a_camel");
+    }
+
+    #[test]
+    fn test_translate_title_case() {
+        assert_eq!(translate("ThisIsATitle"), "this_is_a_title");
     }
 }
