@@ -28,15 +28,17 @@ pub fn to_zero(list: Vec<i32>) -> Option<i32> {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
     fn it_works() {
-        assert_eq!(super::to_zero(vec![-10]), Some(-10));
-        assert_eq!(super::to_zero(vec![5, 2, 8, 4, 7, 1]), Some(1));
-        assert_eq!(super::to_zero(vec![]), None);
-        assert_eq!(super::to_zero(vec![-5, -2, -8, -4, -7, -1]), Some(-1));
-        assert_eq!(super::to_zero(vec![5, 2, 8, 4, 7, -1]), Some(-1));
-        assert_eq!(super::to_zero(vec![-5, -2, -8, -4, -7, 1]), Some(1));
-        assert_eq!(super::to_zero(vec![5, -2, 8, 4, 7, 2]), Some(2));
-        assert_eq!(super::to_zero(vec![5, 2, 8, 4, 7, -2]), Some(2));
+        assert_eq!(to_zero(vec![-10]), Some(-10));
+        assert_eq!(to_zero(vec![5, 2, 8, 4, 7, 1]), Some(1));
+        assert_eq!(to_zero(vec![]), None);
+        assert_eq!(to_zero(vec![-5, -2, -8, -4, -7, -1]), Some(-1));
+        assert_eq!(to_zero(vec![5, 2, 8, 4, 7, -1]), Some(-1));
+        assert_eq!(to_zero(vec![-5, -2, -8, -4, -7, 1]), Some(1));
+        assert_eq!(to_zero(vec![5, -2, 8, 4, 7, 2]), Some(2));
+        assert_eq!(to_zero(vec![5, 2, 8, 4, 7, -2]), Some(2));
     }
 }
