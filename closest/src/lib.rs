@@ -31,13 +31,37 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
+    fn test_produces_one_value() {
         assert_eq!(to_zero(vec![-10]), Some(-10));
+    }
+
+    #[test]
+    fn test_produces_smallest_positive() {
         assert_eq!(to_zero(vec![5, 2, 8, 4, 7, 1]), Some(1));
+    }
+
+    #[test]
+    fn test_produces_no_result() {
         assert_eq!(to_zero(vec![]), None);
+    }
+
+    #[test]
+    fn test_produces_greatest_negative() {
         assert_eq!(to_zero(vec![-5, -2, -8, -4, -7, -1]), Some(-1));
+    }
+
+    #[test]
+    fn test_produces_negative() {
         assert_eq!(to_zero(vec![5, 2, 8, 4, 7, -1]), Some(-1));
+    }
+
+    #[test]
+    fn test_produces_positive() {
         assert_eq!(to_zero(vec![-5, -2, -8, -4, -7, 1]), Some(1));
+    }    
+
+    #[test]
+    fn test_favor_positive() {
         assert_eq!(to_zero(vec![5, -2, 8, 4, 7, 2]), Some(2));
         assert_eq!(to_zero(vec![5, 2, 8, 4, 7, -2]), Some(2));
     }
