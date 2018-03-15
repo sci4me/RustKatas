@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 const TAX_ALCOHOL           : f64 = 0.155;
 const TAX_OTHER             : f64 = 0.075;
 
@@ -5,6 +7,7 @@ const DISCOUNT_100_TO_1000  : f64 = 0.1;
 const DISCOUNT_1000_OR_MORE : f64 = 0.15;
 
 /// ItemKind represents the type of Item (Food, Alcohol, or Other)
+#[derive(PartialEq, Eq, Hash)]
 pub enum ItemKind {
     Food,
     Alcohol,
@@ -42,21 +45,19 @@ impl Item {
 /// assert_eq!(total(vec![Item::new(ItemKind::Food, 1000), Item::new(ItemKind::Alcohol, 1000), Item::new(ItemKind::Other, 1000), Item::new(ItemKind::Alcohol, 10000)]), 13301);
 /// ```
 pub fn total(items: Vec<Item>) -> u32 {
-    let mut total_food      : u32 = 0;
-    let mut total_alcohol   : u32 = 0;
-    let mut total_other     : u32 = 0;
+    let mut totals = HashMap::new();
 
     // Calculate totals for each item type
     for item in items {
-        match item.kind {
-            ItemKind::Food =>    total_food += item.price,
-            ItemKind::Alcohol => total_alcohol += item.price,
-            ItemKind::Other =>   total_other += item.price,
-        }
+        let new_total = match totals.get(&item.kind) {
+            Some(total) => total + item.price,
+            None => item.price,
+        };
+        totals.insert(item.kind, new_total);
     }
 
     // Apply discounts
-    let raw_total = total_food + total_alcohol + total_other;
+    let raw_total : u32 = totals.values().sum();
 
     let discount : f64;
     if raw_total >= 10000 && raw_total < 100000 {
@@ -67,15 +68,21 @@ pub fn total(items: Vec<Item>) -> u32 {
         discount = 1.;
     }
 
-    total_food = ((total_food as f64) * discount) as u32;
-    total_alcohol = ((total_alcohol as f64) * discount) as u32;
-    total_other = ((total_other as f64) * discount) as u32; 
+    for (_, total) in totals.iter_mut() {
+        *total = ((*total as f64) * discount) as u32;
+    }
 
     // Apply taxes
-    total_alcohol = ((total_alcohol as f64) * (1. + TAX_ALCOHOL)) as u32;
-    total_other = ((total_other as f64) * (1. + TAX_OTHER)) as u32;
+    for (kind, total) in totals.iter_mut() {
+        let tax = match *kind {
+            ItemKind::Food => 0.,
+            ItemKind::Alcohol => TAX_ALCOHOL,
+            ItemKind::Other => TAX_OTHER,
+        };
+        *total = ((*total as f64) * (1. + tax)) as u32;
+    }
 
-    return total_food + total_alcohol + total_other;
+    return totals.values().sum();
 }
 
 #[cfg(test)]
