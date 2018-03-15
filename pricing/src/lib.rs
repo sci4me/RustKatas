@@ -100,13 +100,25 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
+    fn test_food_pricing() {
         assert_eq!(total(vec![Item::new(FOOD, 3333), Item::new(FOOD, 3333), Item::new(FOOD, 3333)]), 9999);
         assert_eq!(total(vec![Item::new(FOOD, 5000), Item::new(FOOD, 5000)]), 9000);
         assert_eq!(total(vec![Item::new(FOOD, 5000), Item::new(FOOD, 5000), Item::new(FOOD, 89999)]), 89999);
         assert_eq!(total(vec![Item::new(FOOD, 100000)]), 85000);
+    }
+
+    #[test]
+    fn test_other_pricing() {
         assert_eq!(total(vec![Item::new(OTHER, 1000)]), 1075);
+    }
+
+    #[test]
+    fn test_alcohol_pricing() {
         assert_eq!(total(vec![Item::new(ALCOHOL, 1000)]), 1155);
+    }
+
+    #[test]
+    fn test_pricing() {
         assert_eq!(total(vec![Item::new(FOOD, 1000), Item::new(ALCOHOL, 1000), Item::new(OTHER, 1000), Item::new(ALCOHOL, 10000)]), 13301);
     }
 }
