@@ -1,17 +1,32 @@
 use std::collections::HashMap;
-
-const TAX_ALCOHOL           : f64 = 0.155;
-const TAX_OTHER             : f64 = 0.075;
+use std::hash::{Hash, Hasher};
 
 const DISCOUNT_100_TO_1000  : f64 = 0.1;
 const DISCOUNT_1000_OR_MORE : f64 = 0.15;
 
+pub const FOOD : ItemKind = ItemKind { id: 0, tax: 0. };
+pub const ALCOHOL : ItemKind = ItemKind { id: 1, tax: 0.155 };
+pub const OTHER : ItemKind = ItemKind { id: 2, tax: 0.075 };
+
 /// ItemKind represents the type of Item (Food, Alcohol, or Other)
-#[derive(PartialEq, Eq, Hash)]
-pub enum ItemKind {
-    Food,
-    Alcohol,
-    Other
+/// The id field must be a unique identifier for the ItemKind; it is used to compare ItemKind instances
+pub struct ItemKind {
+    id: u32,
+    tax: f64,
+}
+
+impl PartialEq for ItemKind {
+    fn eq(&self, other: &ItemKind) -> bool {
+        return self.id == other.id;
+    }
+}
+
+impl Eq for ItemKind { }
+
+impl Hash for ItemKind {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.id.hash(state);
+    }
 }
 
 /// The Item struct represents an item being purchased. It has a kind (ItemKind) and a price represented in cents.
@@ -42,7 +57,7 @@ impl Item {
 /// # Examples
 /// ```
 /// use pricing::*;
-/// assert_eq!(total(vec![Item::new(ItemKind::Food, 1000), Item::new(ItemKind::Alcohol, 1000), Item::new(ItemKind::Other, 1000), Item::new(ItemKind::Alcohol, 10000)]), 13301);
+/// assert_eq!(total(vec![Item::new(FOOD, 1000), Item::new(ALCOHOL, 1000), Item::new(OTHER, 1000), Item::new(ALCOHOL, 10000)]), 13301);
 /// ```
 pub fn total(items: Vec<Item>) -> u32 {
     let mut totals = HashMap::new();
@@ -74,12 +89,7 @@ pub fn total(items: Vec<Item>) -> u32 {
 
     // Apply taxes
     for (kind, total) in totals.iter_mut() {
-        let tax = match *kind {
-            ItemKind::Food => 0.,
-            ItemKind::Alcohol => TAX_ALCOHOL,
-            ItemKind::Other => TAX_OTHER,
-        };
-        *total = ((*total as f64) * (1. + tax)) as u32;
+        *total = ((*total as f64) * (1. + kind.tax)) as u32;
     }
 
     return totals.values().sum();
@@ -91,12 +101,12 @@ mod tests {
 
     #[test]
     fn it_works() {
-        assert_eq!(total(vec![Item::new(ItemKind::Food, 3333), Item::new(ItemKind::Food, 3333), Item::new(ItemKind::Food, 3333)]), 9999);
-        assert_eq!(total(vec![Item::new(ItemKind::Food, 5000), Item::new(ItemKind::Food, 5000)]), 9000);
-        assert_eq!(total(vec![Item::new(ItemKind::Food, 5000), Item::new(ItemKind::Food, 5000), Item::new(ItemKind::Food, 89999)]), 89999);
-        assert_eq!(total(vec![Item::new(ItemKind::Food, 100000)]), 85000);
-        assert_eq!(total(vec![Item::new(ItemKind::Other, 1000)]), 1075);
-        assert_eq!(total(vec![Item::new(ItemKind::Alcohol, 1000)]), 1155);
-        assert_eq!(total(vec![Item::new(ItemKind::Food, 1000), Item::new(ItemKind::Alcohol, 1000), Item::new(ItemKind::Other, 1000), Item::new(ItemKind::Alcohol, 10000)]), 13301);
+        assert_eq!(total(vec![Item::new(FOOD, 3333), Item::new(FOOD, 3333), Item::new(FOOD, 3333)]), 9999);
+        assert_eq!(total(vec![Item::new(FOOD, 5000), Item::new(FOOD, 5000)]), 9000);
+        assert_eq!(total(vec![Item::new(FOOD, 5000), Item::new(FOOD, 5000), Item::new(FOOD, 89999)]), 89999);
+        assert_eq!(total(vec![Item::new(FOOD, 100000)]), 85000);
+        assert_eq!(total(vec![Item::new(OTHER, 1000)]), 1075);
+        assert_eq!(total(vec![Item::new(ALCOHOL, 1000)]), 1155);
+        assert_eq!(total(vec![Item::new(FOOD, 1000), Item::new(ALCOHOL, 1000), Item::new(OTHER, 1000), Item::new(ALCOHOL, 10000)]), 13301);
     }
 }
