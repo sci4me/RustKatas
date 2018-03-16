@@ -34,37 +34,53 @@ mod tests {
 
     #[test]
     fn test_produces_one_value() {
-        assert_eq!(to_zero(&vec![-10]), Some(-10));
+        let test = vec![-10];
+        let result = to_zero(&test);
+        assert_eq!(result, Some(-10));
     }
 
     #[test]
     fn test_produces_smallest_positive() {
-        assert_eq!(to_zero(&vec![5, 2, 8, 4, 7, 1]), Some(1));
+        let test = vec![5, 2, 8, 4, 7, 1];
+        let result = to_zero(&test);
+        assert_eq!(result, Some(1));
     }
 
     #[test]
     fn test_produces_no_result() {
-        assert_eq!(to_zero(&vec![]), None);
+        let test = vec![];
+        let result = to_zero(&test);
+        assert_eq!(result, None);
     }
 
     #[test]
     fn test_produces_greatest_negative() {
-        assert_eq!(to_zero(&vec![-5, -2, -8, -4, -7, -1]), Some(-1));
+        let test = vec![-5, -2, -8, -4, -7, -1];
+        let result = to_zero(&test);
+        assert_eq!(result, Some(-1));
     }
 
     #[test]
     fn test_produces_negative() {
-        assert_eq!(to_zero(&vec![5, 2, 8, 4, 7, -1]), Some(-1));
+        let test = vec![5, 2, 8, 4, 7, -1];
+        let result = to_zero(&test);
+        assert_eq!(result, Some(-1));
     }
 
     #[test]
     fn test_produces_positive() {
-        assert_eq!(to_zero(&vec![-5, -2, -8, -4, -7, 1]), Some(1));
+        let test = vec![-5, -2, -8, -4, -7, 1];
+        let result = to_zero(&test);
+        assert_eq!(result, Some(1));
     }    
 
     #[test]
     fn test_favor_positive() {
-        assert_eq!(to_zero(&vec![5, -2, 8, 4, 7, 2]), Some(2));
-        assert_eq!(to_zero(&vec![5, 2, 8, 4, 7, -2]), Some(2));
+        let test1 = vec![5, -2, 8, 4, 7, 2];
+        let test2 = vec![5, 2, 8, 4, 7, -2];
+        let result1 = to_zero(&test1);
+        let result2 = to_zero(&test2);
+        assert_eq!(result1, Some(2));
+        assert_eq!(result2, Some(2));
     }
 }

@@ -102,24 +102,38 @@ mod tests {
 
     #[test]
     fn test_food_pricing() {
-        assert_eq!(total(&vec![Item::new(FOOD, 3333), Item::new(FOOD, 3333), Item::new(FOOD, 3333)]), 9999);
-        assert_eq!(total(&vec![Item::new(FOOD, 5000), Item::new(FOOD, 5000)]), 9000);
-        assert_eq!(total(&vec![Item::new(FOOD, 5000), Item::new(FOOD, 5000), Item::new(FOOD, 89999)]), 89999);
-        assert_eq!(total(&vec![Item::new(FOOD, 100000)]), 85000);
+        let test1 = vec![Item::new(FOOD, 3333), Item::new(FOOD, 3333), Item::new(FOOD, 3333)];
+        let test2 = vec![Item::new(FOOD, 5000), Item::new(FOOD, 5000)];
+        let test3 = vec![Item::new(FOOD, 5000), Item::new(FOOD, 5000), Item::new(FOOD, 89999)];
+        let test4 = vec![Item::new(FOOD, 100000)];
+        let result1 = total(&test1);
+        let result2 = total(&test2);
+        let result3 = total(&test3);
+        let result4 = total(&test4);
+        assert_eq!(result1, 9999);
+        assert_eq!(result2, 9000);
+        assert_eq!(result3, 89999);
+        assert_eq!(result4, 85000);
     }
 
     #[test]
     fn test_other_pricing() {
-        assert_eq!(total(&vec![Item::new(OTHER, 1000)]), 1075);
+        let test = vec![Item::new(OTHER, 1000)];
+        let result = total(&test);
+        assert_eq!(result, 1075);
     }
 
     #[test]
     fn test_alcohol_pricing() {
-        assert_eq!(total(&vec![Item::new(ALCOHOL, 1000)]), 1155);
+        let test = vec![Item::new(ALCOHOL, 1000)];
+        let result = total(&test);
+        assert_eq!(result, 1155);
     }
 
     #[test]
     fn test_pricing() {
-        assert_eq!(total(&vec![Item::new(FOOD, 1000), Item::new(ALCOHOL, 1000), Item::new(OTHER, 1000), Item::new(ALCOHOL, 10000)]), 13301);
+        let test = vec![Item::new(FOOD, 1000), Item::new(ALCOHOL, 1000), Item::new(OTHER, 1000), Item::new(ALCOHOL, 10000)];
+        let result = total(&test);
+        assert_eq!(result, 13301);
     }
 }

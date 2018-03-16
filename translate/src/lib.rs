@@ -34,11 +34,15 @@ mod tests {
 
     #[test]
     fn test_translate_camel_case() {
-        assert_eq!(translate("thisIsACamel"), "this_is_a_camel");
+        let test = "thisIsACamel";
+        let result = translate(test);
+        assert_eq!(result, "this_is_a_camel");
     }
 
     #[test]
     fn test_translate_title_case() {
-        assert_eq!(translate("ThisIsATitle"), "this_is_a_title");
+        let test = "ThisIsATitle";
+        let result = translate(test);
+        assert_eq!(result, "this_is_a_title");
     }
 }
