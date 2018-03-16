@@ -1,4 +1,8 @@
-/// This function returns the next number in the collatz sequence
+extern crate rayon;
+
+use rayon::prelude::*;
+
+/// This function returns the next number in the collatz sequence.
 ///
 /// # Examples
 /// ```
@@ -13,7 +17,7 @@ pub fn collatz(x: u64) -> u64 {
     3 * x + 1
 }
 
-/// This function counts the number of steps it takes for a number to reach 1 by following the collatz sequence
+/// This function counts the number of steps it takes for a number to reach 1 by following the collatz sequence.
 ///
 /// # Examples
 /// ```
@@ -36,7 +40,7 @@ pub fn steps(x: u64) -> u64 {
     count
 }
 
-/// This function calculates the sum of each invocation of the 'steps' function in a range of positive integers
+/// This function calculates the sum of each invocation of the 'steps' function in a range of positive integers.
 /// 
 /// # Examples
 /// ```
@@ -48,6 +52,21 @@ pub fn steps_sum(start: u64, end: u64) -> u64 {
     assert!(end > start, "end must be > start");
 
     (start..end+1).map(steps).sum()
+}
+
+/// This function calculates the sum of each invocation of the 'steps' function in a range of positive integers.
+/// This function is equivalent to 'steps_sum' except that it executes in parallel using the rayon library.
+///
+/// # Examples
+/// ```
+/// use collatz::*;
+/// assert_eq!(steps_sum(1, 7), 39);
+/// ```
+pub fn par_steps_sum(start: u64, end: u64) -> u64 {
+    assert!(start > 0, "start must be > 0");
+    assert!(end > start, "end must be > start");
+
+    (start..end+1).into_par_iter().map(steps).sum()
 }
 
 #[cfg(test)]
@@ -95,5 +114,16 @@ mod tests {
     #[test]
     fn test_steps_sum() {
         assert_eq!(steps_sum(1, 7), 39); // 39 is the sum of steps(1)..steps(7) taken from test_steps
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_par_steps_sum_rejects_end_less_than_start() {
+        par_steps_sum(10, 5);
+    }
+
+    #[test]
+    fn test_par_steps_sum() {
+        assert_eq!(par_steps_sum(1, 7), 39); // 39 is the sum of steps(1)..steps(7) taken from test_steps
     }
 }
