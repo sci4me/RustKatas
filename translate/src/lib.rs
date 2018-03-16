@@ -2,7 +2,7 @@
 ///
 /// # Examples
 /// ```
-/// use translate::translate;
+/// use translate::*;
 /// assert_eq!(translate("thisIsACamel"), "this_is_a_camel");
 /// assert_eq!(translate("ThisIsATitle"), "this_is_a_title");
 /// ```
