@@ -25,7 +25,7 @@ pub fn translate(s: &str) -> String {
         index += 1;
     }
 
-    return result.into_iter().collect();
+    result.into_iter().collect()
 }
 
 #[cfg(test)]

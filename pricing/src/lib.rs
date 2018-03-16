@@ -93,7 +93,7 @@ pub fn total(items: &Vec<Item>) -> u32 {
         *total = ((*total as f64) * (1. + kind.tax)) as u32;
     }
 
-    return totals.values().sum();
+    totals.values().sum()
 }
 
 #[cfg(test)]

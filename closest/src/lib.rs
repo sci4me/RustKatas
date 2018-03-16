@@ -25,7 +25,7 @@ pub fn to_zero(list: &Vec<i32>) -> Option<i32> {
         }
     }
 
-    return Some(closest);
+    Some(closest)
 }
 
 #[cfg(test)]
