@@ -1,3 +1,11 @@
+/// This function returns the next number in the collatz sequence
+///
+/// # Examples
+/// ```
+/// use collatz::*;
+/// assert_eq!(collatz(2), 1);
+/// assert_eq!(collatz(3), 10);
+/// ```
 pub fn collatz(x: u64) -> u64 {
     if x % 2 == 0 {
         return x / 2;
@@ -5,6 +13,13 @@ pub fn collatz(x: u64) -> u64 {
     3 * x + 1
 }
 
+/// This function counts the number of steps it takes for a number to reach 1 by following the collatz sequence
+///
+/// # Examples
+/// ```
+/// use collatz::*;
+/// assert_eq!(steps(5), 5); // 5 -> 16 -> 8 -> 4 -> 2 -> 1
+/// ```
 pub fn steps(x: u64) -> u64 {
     if x == 0 {
         panic!("x must be > 0");
