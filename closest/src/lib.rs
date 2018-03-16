@@ -4,7 +4,8 @@
 ///
 /// # Examples
 /// ```
-/// assert_eq!(closest::to_zero(&vec![5, -2, 8, 4, 7, 2]), Some(2));
+/// use closest::*;
+/// assert_eq!(to_zero(&vec![5, -2, 8, 4, 7, 2]), Some(2));
 /// ```
 pub fn to_zero(list: &Vec<i32>) -> Option<i32> {
     if list.len() == 0 {
