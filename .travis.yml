@@ -1,0 +1,6 @@
+language: rust
+script:
+  - (pushd closest && cargo test; popd)
+  - (pushd collatz && cargo test; popd)
+  - (pushd pricing && cargo test; popd)
+  - (pushd translate && cargo test; popd)
