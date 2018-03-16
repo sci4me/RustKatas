@@ -36,6 +36,20 @@ pub fn steps(x: u64) -> u64 {
     count
 }
 
+/// This function calculates the sum of each invocation of the 'steps' function in a range of positive integers
+/// 
+/// # Examples
+/// ```
+/// use collatz::*;
+/// assert_eq!(steps_sum(1, 7), 39);
+/// ```
+pub fn steps_sum(start: u64, end: u64) -> u64 {
+    assert!(start > 0, "start must be > 0");
+    assert!(end > start, "end must be > start");
+
+    (start..end+1).map(steps).sum()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -64,5 +78,22 @@ mod tests {
         assert_eq!(steps(5), 5);        // 5 -> 16 -> 8 -> 4 -> 2 -> 1
         assert_eq!(steps(6), 8);        // 6 -> 3 -> 10 -> 5 -> 16 -> 8 -> 4 -> 2 -> 1
         assert_eq!(steps(7), 16);       // 7 -> 22 -> 11 -> 34 -> 17 -> 52 -> 26 -> 13 -> 40 -> 20 -> 10 -> 5 -> 16 -> 8 -> 4 -> 2 -> 1
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_steps_sum_rejects_zero() {
+        steps_sum(0, 10);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_steps_sum_rejects_end_less_than_start() {
+        steps_sum(10, 5);
+    }
+
+    #[test]
+    fn test_steps_sum() {
+        assert_eq!(steps_sum(1, 7), 39); // 39 is the sum of steps(1)..steps(7) taken from test_steps
     }
 }
