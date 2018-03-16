@@ -10,6 +10,7 @@ pub const OTHER : ItemKind = ItemKind { id: 2, tax: 0.075 };
 
 /// ItemKind represents the type of Item (Food, Alcohol, or Other)
 /// The id field must be a unique identifier for the ItemKind; it is used to compare ItemKind instances
+#[derive(Clone)]
 pub struct ItemKind {
     id: u32,
     tax: f64,
@@ -57,9 +58,9 @@ impl Item {
 /// # Examples
 /// ```
 /// use pricing::*;
-/// assert_eq!(total(vec![Item::new(FOOD, 1000), Item::new(ALCOHOL, 1000), Item::new(OTHER, 1000), Item::new(ALCOHOL, 10000)]), 13301);
+/// assert_eq!(total(&vec![Item::new(FOOD, 1000), Item::new(ALCOHOL, 1000), Item::new(OTHER, 1000), Item::new(ALCOHOL, 10000)]), 13301);
 /// ```
-pub fn total(items: Vec<Item>) -> u32 {
+pub fn total(items: &Vec<Item>) -> u32 {
     let mut totals = HashMap::new();
 
     // Calculate totals for each item type
@@ -68,7 +69,7 @@ pub fn total(items: Vec<Item>) -> u32 {
             Some(total) => total + item.price,
             None => item.price,
         };
-        totals.insert(item.kind, new_total);
+        totals.insert(item.kind.clone(), new_total);
     }
 
     // Apply discounts
@@ -101,24 +102,24 @@ mod tests {
 
     #[test]
     fn test_food_pricing() {
-        assert_eq!(total(vec![Item::new(FOOD, 3333), Item::new(FOOD, 3333), Item::new(FOOD, 3333)]), 9999);
-        assert_eq!(total(vec![Item::new(FOOD, 5000), Item::new(FOOD, 5000)]), 9000);
-        assert_eq!(total(vec![Item::new(FOOD, 5000), Item::new(FOOD, 5000), Item::new(FOOD, 89999)]), 89999);
-        assert_eq!(total(vec![Item::new(FOOD, 100000)]), 85000);
+        assert_eq!(total(&vec![Item::new(FOOD, 3333), Item::new(FOOD, 3333), Item::new(FOOD, 3333)]), 9999);
+        assert_eq!(total(&vec![Item::new(FOOD, 5000), Item::new(FOOD, 5000)]), 9000);
+        assert_eq!(total(&vec![Item::new(FOOD, 5000), Item::new(FOOD, 5000), Item::new(FOOD, 89999)]), 89999);
+        assert_eq!(total(&vec![Item::new(FOOD, 100000)]), 85000);
     }
 
     #[test]
     fn test_other_pricing() {
-        assert_eq!(total(vec![Item::new(OTHER, 1000)]), 1075);
+        assert_eq!(total(&vec![Item::new(OTHER, 1000)]), 1075);
     }
 
     #[test]
     fn test_alcohol_pricing() {
-        assert_eq!(total(vec![Item::new(ALCOHOL, 1000)]), 1155);
+        assert_eq!(total(&vec![Item::new(ALCOHOL, 1000)]), 1155);
     }
 
     #[test]
     fn test_pricing() {
-        assert_eq!(total(vec![Item::new(FOOD, 1000), Item::new(ALCOHOL, 1000), Item::new(OTHER, 1000), Item::new(ALCOHOL, 10000)]), 13301);
+        assert_eq!(total(&vec![Item::new(FOOD, 1000), Item::new(ALCOHOL, 1000), Item::new(OTHER, 1000), Item::new(ALCOHOL, 10000)]), 13301);
     }
 }
