@@ -144,7 +144,7 @@ pub fn run(ir: &Vec<Insn>) {
             InsnKind::LEFT => dp -= insn.operand,
             InsnKind::RIGHT => dp += insn.operand,
             InsnKind::READ => { /* TODO */ },
-            InsnKind::WRITE => print!("{}", data[dp] as char),
+            InsnKind::WRITE => for _ in 0..insn.operand { print!("{}", data[dp] as char); },
             InsnKind::OPEN => if data[dp] == 0 { new_ip = insn.operand; },
             InsnKind::CLOSE => if data[dp] != 0 { new_ip = insn.operand; },
         }
