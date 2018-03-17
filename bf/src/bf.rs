@@ -60,7 +60,7 @@ fn lex(code: &str) -> Vec<InsnKind> {
 ///
 /// This function compresses runs of multiple instructions
 /// into a single instruction with a count
-fn parse_tokens(tokens: Vec<InsnKind>) -> Vec<Insn> {
+fn parse_tokens(tokens: &Vec<InsnKind>) -> Vec<Insn> {
     let len = tokens.len();
 
     let mut result = Vec::new();
@@ -121,7 +121,7 @@ fn compute_jumps(insns: &mut Vec<Insn>) {
 /// It also computes the jump locations of the loop instructions
 pub fn parse(code: &str) -> Vec<Insn> {
     let tokens = lex(code);
-    let mut ir = parse_tokens(tokens);
+    let mut ir = parse_tokens(&tokens);
     compute_jumps(&mut ir);
     ir
 }
@@ -170,7 +170,7 @@ mod tests {
         let test = vec![InsnKind::ADD, InsnKind::ADD, InsnKind::ADD, InsnKind::OPEN, InsnKind::SUB, InsnKind::CLOSE, 
                         InsnKind::RIGHT, InsnKind::RIGHT, InsnKind::RIGHT, InsnKind::LEFT, InsnKind::LEFT, InsnKind::LEFT,
                         InsnKind::READ, InsnKind::READ, InsnKind::WRITE, InsnKind::WRITE];
-        let result = parse_tokens(test);
+        let result = parse_tokens(&test);
         assert_eq!(result, vec![Insn::new(InsnKind::ADD, 3), Insn::new(InsnKind::OPEN, 1), Insn::new(InsnKind::SUB, 1), Insn::new(InsnKind::CLOSE, 1),
                                 Insn::new(InsnKind::RIGHT, 3), Insn::new(InsnKind::LEFT, 3), Insn::new(InsnKind::READ, 2), Insn::new(InsnKind::WRITE, 2)]);
     }
@@ -181,18 +181,18 @@ mod tests {
                             Insn::new(InsnKind::OPEN, 1), Insn::new(InsnKind::SUB, 1), Insn::new(InsnKind::CLOSE, 1), Insn::new(InsnKind::CLOSE, 1),
                             Insn::new(InsnKind::RIGHT, 3), Insn::new(InsnKind::LEFT, 3), Insn::new(InsnKind::READ, 2), Insn::new(InsnKind::WRITE, 2)];
         compute_jumps(&mut test);
-        assert_eq!(test[1].operand, 6);
-        assert_eq!(test[6].operand, 1);
-        assert_eq!(test[3].operand, 5);
-        assert_eq!(test[5].operand, 3);
+        assert_eq!(test[1].operand, 7);
+        assert_eq!(test[6].operand, 2);
+        assert_eq!(test[3].operand, 6);
+        assert_eq!(test[5].operand, 4);
     }
 
     #[test]
     fn test_parse() {
         let test = "+++[-[-]]>>><<<,,..";
         let result = parse(test);
-        assert_eq!(result, vec![Insn::new(InsnKind::ADD, 3), Insn::new(InsnKind::OPEN, 6), Insn::new(InsnKind::SUB, 1), 
-                                Insn::new(InsnKind::OPEN, 5), Insn::new(InsnKind::SUB, 1), Insn::new(InsnKind::CLOSE, 3), Insn::new(InsnKind::CLOSE, 1),
+        assert_eq!(result, vec![Insn::new(InsnKind::ADD, 3), Insn::new(InsnKind::OPEN, 7), Insn::new(InsnKind::SUB, 1), 
+                                Insn::new(InsnKind::OPEN, 6), Insn::new(InsnKind::SUB, 1), Insn::new(InsnKind::CLOSE, 4), Insn::new(InsnKind::CLOSE, 2),
                                 Insn::new(InsnKind::RIGHT, 3), Insn::new(InsnKind::LEFT, 3), Insn::new(InsnKind::READ, 2), Insn::new(InsnKind::WRITE, 2)]);   
     }
 }

@@ -16,18 +16,9 @@ fn main() {
         return;
     }
 
-    let file = File::open(&args[1]);
-    if file.is_err() {
-        println!("{}", file.err().unwrap());
-        return;
-    }
-
+    let mut file = File::open(&args[1]).unwrap();
     let mut contents = String::new();
-    let r = file.unwrap().read_to_string(&mut contents);
-    if r.is_err() {
-        println!("{}", r.err().unwrap());
-        return;
-    }
+    file.read_to_string(&mut contents).unwrap();
 
     let ir = bf::parse(&contents);
     bf::run(&ir);
