@@ -1,3 +1,5 @@
+use std::io::{stdin, Read};
+
 /// This enum represents the eight valid instructions in brainf*ck
 #[derive(PartialEq)]
 #[derive(Debug)]
@@ -143,7 +145,7 @@ pub fn run(ir: &Vec<Insn>) {
             InsnKind::SUB => data[dp] = (((data[dp] as usize) - insn.operand) % 256) as u8,
             InsnKind::LEFT => dp -= insn.operand,
             InsnKind::RIGHT => dp += insn.operand,
-            InsnKind::READ => { /* TODO */ },
+            InsnKind::READ => { let stdin = stdin(); for _ in 0..insn.operand { data[dp] = stdin.lock().bytes().next().unwrap_or(Ok(0)).unwrap_or(0); } },
             InsnKind::WRITE => for _ in 0..insn.operand { print!("{}", data[dp] as char); },
             InsnKind::OPEN => if data[dp] == 0 { new_ip = insn.operand; },
             InsnKind::CLOSE => if data[dp] != 0 { new_ip = insn.operand; },
