@@ -10,3 +10,4 @@ script:
   - (pushd translate && cargo test; popd)
   - (pushd sorting && cargo test; popd)
   - (pushd fizz_buzz && cargo test; popd)
+  - (pushd bf && cargo test; popd)
