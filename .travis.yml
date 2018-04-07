@@ -8,3 +8,5 @@ script:
   - (pushd collatz && cargo test; popd)
   - (pushd pricing && cargo test; popd)
   - (pushd translate && cargo test; popd)
+  - (pushd sorting && cargo test; popd)
+  - (pushd fizz_buzz && cargo test; popd)
